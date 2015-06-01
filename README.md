@@ -20,11 +20,13 @@ This module works on CentOS 7.
 
 All the basic parameters are stored in variables files, localized in `group_vars/*`.     
 
+
   **group_vars/all**
   * `zabbix_version`: version of Zabbix Repository and installation. Versions 2.2 and 2.4 are working.
   * `serverip`: IP address to the zabbix-server choosed. Used to configure agents/proxy.
   * `proxyip`: IP address to the zabbix-proxy choosed. Used to configure agents.
   * `point_agent_to`: Where should the zabbix-agent be pointed to? Some agents may be pointed to the proxy and others direct to the server, so proxy and agent are accepted values. You can override this to a specifc agent in `hosts_vars/<specific-agent>`. 
+
 
   **group_vars/proxy or group_vars/server**
   * `_installfrontend`: True if need frontend installation on the server. If False, just installs the server and its configuration files.
