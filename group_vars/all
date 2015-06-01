@@ -1,0 +1,11 @@
+# generic and agent vars
+
+# choose zabbix version
+zabbix_version: 2.4
+
+# set IPs
+serverip: 192.168.60.10
+proxyip: 192.168.60.11
+
+# where should the agents point to?
+point_agent_to: proxy

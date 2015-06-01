@@ -1,0 +1,34 @@
+---
+- name: check if mysql db already exists
+  shell: "mysql -u {{ proxy_dbuser }} -p{{ proxy_dbpassword }} -e 'SHOW DATABASES;' | grep {{ proxy_dbname }}"
+  ignore_errors: yes
+  register: proxy_dbstatus
+
+- name: install mysql db
+  yum: name=mariadb,mariadb-server,MySQL-python state=latest disable_gpg_check=yes
+  notify: service mysql
+
+- name: force mysql to start 
+  service: name=mariadb state=started
+
+- name: change mysql root password
+  mysql_user: name=root password={{ mysql_rootpass }} 
+  when: mysql_changeroot 
+
+- name: change my.cnf (for root password)
+  template: src=my.cnf.j2 dest=~/.my.cnf
+  when: mysql_changeroot 
+
+- name: create mysql user
+  mysql_user: name={{ proxy_dbuser }} password={{ proxy_dbpassword }} priv={{ proxy_dbname }}.*:ALL state=present
+  when: proxy_loaddb
+
+# create the database and import the schemas
+# just run once, because proxy_dbstatus will return 1 after the database creation
+- name: create mysql database
+  mysql_db: name={{ proxy_dbname }} state=present
+  when: proxy_loaddb and proxy_dbstatus.rc != 0
+
+- name: import mysql schema table
+  mysql_db: name={{ proxy_dbname }} state=import target=/usr/share/doc/zabbix-proxy-mysql-{{ proxy_longversion.stdout }}/create/schema.sql
+  when: proxy_loaddb and proxy_dbstatus.rc != 0

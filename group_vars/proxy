@@ -1,0 +1,19 @@
+# all proxy variables goes here :)
+
+# proxy bd
+proxy_db: sqlite3 # mysql, pgsql or sqlite3
+proxy_installdb: True
+proxy_loaddb: True
+proxy_dbhost: localhost
+proxy_dbname: zabbix
+proxy_dbuser: zabbix
+proxy_dbpassword: zabbix
+
+# pgsql specific information
+pgsql_version: 9.4
+pgsql_changeroot: True
+pgsql_postgrespass: postgres
+
+# mysql specific information
+mysql_changeroot: True
+mysql_rootpass: mysql

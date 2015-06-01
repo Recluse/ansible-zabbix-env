@@ -1,0 +1,26 @@
+# all server variables goes here :)
+
+# frontend
+server_installfrontend: True
+server_frontend: nginx # nginx or apache
+
+# server bd
+server_db: mysql # mysql or pgsql
+server_installdb: True
+server_loaddb: True
+server_dbhost: localhost
+server_dbname: zabbix
+server_dbuser: zabbix
+server_dbpassword: zabbix
+
+# pgsql specific
+pgsql_version: 9.4
+pgsql_changeroot: True
+pgsql_postgrespass: postgres
+
+# mysql specific
+mysql_changeroot: True
+mysql_rootpass: mysql
+
+# server specific
+server_timezone: America/Sao_Paulo

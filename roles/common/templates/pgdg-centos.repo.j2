@@ -1,0 +1,14 @@
+[pgdg{{ pgsql_version |replace(".","") }}]
+name=PostgreSQL {{ pgsql_version }} $releasever - $basearch
+baseurl=http://yum.postgresql.org/{{ pgsql_version }}/redhat/rhel-$releasever-$basearch
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-{{ pgsql_version |replace(".","") }}
+
+[pgdg{{ pgsql_version |replace(".","") }}-source]
+name=PostgreSQL {{ pgsql_version }} $releasever - $basearch - Source
+failovermethod=priority
+baseurl=http://yum.postgresql.org/srpms/{{ pgsql_version }}/redhat/rhel-$releasever-$basearch
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-{{ pgsql_version |replace(".","") }}

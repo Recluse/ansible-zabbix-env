@@ -1,0 +1,30 @@
+---
+- hosts: all
+  #user: root
+  sudo: yes
+
+  roles: 
+    - common
+
+- hosts: server
+  #user: root
+  sudo: yes
+
+  roles:
+    - zabbix-server
+    - zabbix-agent
+
+- hosts: proxy
+  #user: root
+  sudo: yes
+
+  roles:
+    - zabbix-proxy
+    - zabbix-agent
+
+- hosts: agent
+  #user: root
+  sudo: yes
+
+  roles:
+    - zabbix-agent

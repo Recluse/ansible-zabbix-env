@@ -1,0 +1,33 @@
+---
+- name: install zabbix-server-bd
+  yum: name=zabbix-server-{{ server_db }} state=latest disable_gpg_check=yes
+
+- name: install zabbix-web-frontend
+  yum: name=zabbix-web-{{ server_db }} state=latest disable_gpg_check=yes
+
+- name: get zabbix long version
+  shell: "rpm -qav | grep zabbix-server-2 | cut -d - -f 3"
+  register: server_longversion
+
+- name: copy server configuration
+  template: src=zabbix_server.conf.j2 dest=/etc/zabbix/zabbix_server.conf
+  notify: service zabbix
+
+- name: force zabbix start
+  service: name=zabbix-server state=started
+
+- name: mysql subrole
+  include: mysql.yml
+  when: server_db == "mysql" and server_installdb
+
+- name: pgsql subrole
+  include: pgsql.yml
+  when: server_db == "pgsql" and server_installdb
+
+- name: nginx subrole
+  include: nginx.yml
+  when: server_frontend == "nginx" and server_installfrontend
+
+- name: apache subrole
+  include: apache.yml
+  when: server_frontend == "apache" and server_installfrontend

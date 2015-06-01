@@ -1,0 +1,62 @@
+---
+- name: check if postgresql-setup initdb was already executed
+  shell: ls /var/lib/pgsql/data/PG_VERSION
+  ignore_errors: yes
+  register: init_pgsql
+
+- name: install pgsql db
+  yum: name=postgresql,postgresql-server,python-psycopg2 state=latest disable_gpg_check=yes
+  notify: service pgsql
+
+- name: init pgsql
+  shell: postgresql-setup initdb
+  when: init_pgsql.rc != 0
+  notify: service pgsql
+
+- name: force pgsql to start
+  service: name=postgresql state=restarted
+
+# change the postgres password just once
+# after md5 authentication, the command bellow will fail
+- name: check if password was already changed
+  shell: sudo -u postgres psql -w postgres -c \\q
+  when: pgsql_changeroot
+  ignore_errors: yes
+  register: check_password
+
+# after the templates, postgres will use md5 to authenticate
+# so we need to change the postgres password before anything else
+# using shell, postgresql_user fail to change 'postgres' password
+- name: change pgsql postgres password
+  shell: sudo -u postgres psql -w postgres -c "alter user postgres with password '{{ pgsql_postgrespass  }}';"
+  when: check_password.rc == 0 and pgsql_changeroot
+
+- name: configure pg_hba
+  template: src=pg_hba.conf.j2 dest=/var/lib/pgsql/data/pg_hba.conf owner=postgres group=postgres
+  notify: service pgsql
+
+- name: configure postgresql.conf
+  template: src=postgresql.conf.j2 dest=/var/lib/pgsql/data/postgresql.conf owner=postgres group=postgres
+  notify: service pgsql
+
+- name: force pgsql to restart
+  service: name=postgresql state=restarted
+
+- name: check if pgsql db already exists
+  shell: PGPASSWORD={{ pgsql_postgrespass }} psql -U postgres -c "\l" | grep {{ proxy_dbname }} 
+  ignore_errors: yes
+  register: proxy_dbstatus
+
+# create the database and import the schemas
+# just run once, because proxy_dbstatus will return 1 after the database creation
+- name: create db
+  postgresql_db: name={{ proxy_dbname }} encoding='UTF-8' login_user=postgres login_password={{ pgsql_postgrespass }}
+  when: proxy_loaddb and proxy_dbstatus.rc != 0
+
+- name: create db user
+  postgresql_user: db={{ proxy_dbname }} name={{ proxy_dbuser }} password={{ proxy_dbpassword }} priv=ALL state=present login_user=postgres login_password={{ pgsql_postgrespass }}
+  when: proxy_loaddb and proxy_dbstatus.rc != 0
+
+- name: import pgsql schema table
+  shell: "PGPASSWORD={{ proxy_dbpassword }} psql -U {{ proxy_dbuser }} -h localhost -d {{ proxy_dbname }} -f /usr/share/doc/zabbix-proxy-pgsql-{{ proxy_longversion.stdout }}/create/schema.sql"
+  when: proxy_loaddb and proxy_dbstatus.rc != 0

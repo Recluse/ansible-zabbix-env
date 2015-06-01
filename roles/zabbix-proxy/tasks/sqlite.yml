@@ -1,0 +1,23 @@
+---
+- name: check if sqlite database exist
+  shell: ls /var/lib/sqlite/{{ proxy_dbname }}.db
+  ignore_errors: yes
+  register: proxy_dbstatus
+
+- name: install sqlite db
+  yum: name=sqlite,sqlite-devel state=latest disable_gpg_check=yes
+
+- name: create sqlite structure
+  file: name=/var/lib/sqlite state=directory owner=zabbix group=zabbix
+  when: proxy_loaddb and proxy_dbstatus.rc != 0
+  notify: service zabbix-proxy
+
+- name: import sqlite schema
+  shell: sqlite3 /var/lib/sqlite/{{ proxy_dbname }}.db < /usr/share/doc/zabbix-proxy-sqlite3-{{ proxy_longversion.stdout }}/create/schema.sql
+  when: proxy_loaddb and proxy_dbstatus.rc != 0
+  notify: service zabbix-proxy
+
+- name: set database permission
+  file: name=/var/lib/sqlite/{{ proxy_dbname }}.db owner=zabbix group=zabbix
+  when: proxy_loaddb and proxy_dbstatus.rc != 0
+  notify: service zabbix-proxy

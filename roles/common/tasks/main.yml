@@ -1,0 +1,11 @@
+---
+- name: copy zabbix repo
+  template: src=zabbix.repo.j2 dest=/etc/yum.repos.d/zabbix.repo
+
+- name: copy nginx repo
+  template: src=nginx.repo.j2 dest=/etc/yum.repos.d/nginx.repo
+  when: server_frontend is defined
+
+- name: copy pgsql repo
+  template: src=pgdg-centos.repo.j2 dest=/etc/yum.repos.d/pgdg-centos.repo
+  when: pgsql_version is defined

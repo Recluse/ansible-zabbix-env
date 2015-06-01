@@ -1,0 +1,24 @@
+---
+- name: install zabbix-proxy-bd
+  yum: name=zabbix-proxy-{{ proxy_db }} state=latest disable_gpg_check=yes
+
+- name: get zabbix long version
+  shell: "rpm -qav | grep zabbix-proxy-2 | cut -d - -f 3"
+  register: proxy_longversion
+
+- name: copy proxy configuration
+  template: src=zabbix_proxy.conf.j2 dest=/etc/zabbix/zabbix_proxy.conf
+  notify: service zabbix-proxy
+
+- name: mysql subrole
+  include: mysql.yml
+  when: proxy_db == "mysql" and proxy_installdb
+
+- name: pgsql subrole
+  include: pgsql.yml
+  when: proxy_db == "pgsql" and proxy_installdb
+
+- name: sqlite subrole
+  include: sqlite.yml
+  when: proxy_db == "sqlite3" and proxy_installdb
+

@@ -1,0 +1,17 @@
+---
+- name: ensure nginx is stopped
+  service: name=nginx state=stopped enabled=no
+
+- name: configue php.ini
+  template: src=php.ini.j2 dest=/etc/php.ini 
+  notify: service apache
+
+# this always restart one service or another, making the frontend switchable
+- name: configure webmaintenance zabbix to apache
+  file: path=/etc/zabbix/web owner=apache group=apache recurse=yes state=directory
+  notify: service apache
+
+# this always restart one service or another, making the frontend switchable
+- name: configure zabbix bd connection
+  template: src=zabbix.conf.php.j2 dest=/etc/zabbix/web/zabbix.conf.php owner=apache group=apache
+  notify: service apache

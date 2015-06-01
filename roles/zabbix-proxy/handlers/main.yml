@@ -1,0 +1,9 @@
+---
+- name: service mysql
+  service: name=mariadb state=restarted enabled=yes
+
+- name: service zabbix-proxy
+  service: name=zabbix-proxy state=restarted enabled=yes
+
+- name: service pgsql
+  service: name=postgresql state=restarted enabled=yes
