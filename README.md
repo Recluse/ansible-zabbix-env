@@ -9,12 +9,12 @@ This module works on CentOS 7.
 
 ### General Configuration
 
-To setup a full environment, you must select just ONE server, ONE proxy and ONE or MANY agents. The agents may point to the server or proxy.         
-In the `hosts` file, configure the address of each one.              
-The server frontend is totally switchable, you can select Nginx, run the playbook, change to Apache, run again and it will load normally. The service is not removed, just stopped. The server will be access from the address: `http://serveraddres/zabbix`.         
-Databases are also switchable, but no data are exported/imported on the switch. The services are not stopped, just the server/proxy configuration are changed.              
-Once the database is installed, it won't try to load the SQL files again. This way, no data is overridden.         
-I recommend running this setup in a fresh environment (without database/frontend configuration). It can be buggy if tried to run on an existent front/backend.              
+  * To setup a full environment, you must select just ONE server, ONE proxy and ONE or MANY agents. The agents may point to the server or proxy.         
+  * In the `hosts` file, configure the address of each one.              
+  * The server frontend is totally switchable, you can select Nginx, run the playbook, change to Apache, run again and it will load normally. The service is not removed, just stopped. The server will be access from the address: `http://serveraddres/zabbix`.         
+  * Databases are also switchable, but no data are exported/imported on the switch. The services are not stopped, just the server/proxy configuration are changed.              
+  * Once the database is installed, it won't try to load the SQL files again. This way, no data is overridden.         
+  * I recommend running this setup in a fresh environment (without database/frontend configuration). It can be buggy if tried to run on an existent front/backend.              
 
 ### Variables Reference
 
@@ -44,7 +44,7 @@ All the basic parameters are stored in variables files, localized in `group_vars
 
 ### More Info
 
-A lot of specific zabbix-{server,proxy,agent} are hardcoded in the templates. If you may edit it to variables, I would appreciate a pull request to incorporate the modifications.         
-I tested this environment in VMs and Vagrant and worked fine. I tried to make it most idempotent possible, but some changs won't work, like changing the postgress/root password.         
-After the run, is needed to log in the zabbix-server interface and add the proxy/agents. Login: Admin / Pass: zabbix. The defaults.         
-Any bug, error or improvement, you can reach me at Github or jonatas.baldin at gmail dot com.         
+  * A lot of specific zabbix-{server,proxy,agent} are hardcoded in the templates. If you may edit it to variables, I would appreciate a pull request to incorporate the modifications.         
+  * I tested this environment in VMs and Vagrant and worked fine. I tried to make it most idempotent possible, but some changs won't work, like changing the postgress/root password.         
+  * After the run, is needed to log in the zabbix-server interface and add the proxy/agents. Login: Admin / Pass: zabbix. The defaults.         
+  * Any bug, error or improvement, you can reach me at Github or jonatas.baldin at gmail dot com.         
