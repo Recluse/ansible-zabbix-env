@@ -82,13 +82,13 @@ LogFileSize=0
 # Default:
 # Server=
 
-{% if (ansible_hostname or ansible_fqdn) in groups['server'] %} 
+{% if (ansible_hostname in groups['server'] or ansible_fqdn in groups['server']) %} 
 Server=127.0.0.1
-{% elif (ansible_hostname or ansible_fqdn) in groups['proxy'] %} 
+{% elif (ansible_hostname in groups['proxy'] or ansible_fqdn in groups['proxy']) %} 
 Server={{ proxyip }}
-{% elif (ansible_hostname or ansible_fqdn) in groups['agent'] and point_agent_to == "proxy" %}
+{% elif (ansible_hostname in groups['agent'] or ansible_fqdn in groups['agent']) and point_agent_to == "proxy" %}
 Server={{ proxyip }}
-{% elif (ansible_hostname or ansible_fqdn) in groups['agent'] and point_agent_to == "server" %}
+{% elif (ansible_hostname in groups['agent'] or ansible_fqdn in groups['agent']) and point_agent_to == "server" %}
 Server={{ serverip }}
 {% else %}
 Server=127.0.0.1
