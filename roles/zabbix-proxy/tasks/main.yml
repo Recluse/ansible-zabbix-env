@@ -13,12 +13,14 @@
 - name: mysql subrole
   include: mysql.yml
   when: proxy_db == "mysql" and proxy_installdb
+  notify: service zabbix-proxy
 
 - name: pgsql subrole
   include: pgsql.yml
   when: proxy_db == "pgsql" and proxy_installdb
+  notify: service zabbix-proxy
 
 - name: sqlite subrole
   include: sqlite.yml
   when: proxy_db == "sqlite3" and proxy_installdb
-
+  notify: service zabbix-proxy

@@ -13,21 +13,22 @@
   template: src=zabbix_server.conf.j2 dest=/etc/zabbix/zabbix_server.conf
   notify: service zabbix
 
-- name: force zabbix start
-  service: name=zabbix-server state=started
-
 - name: mysql subrole
   include: mysql.yml
   when: server_db == "mysql" and server_installdb
+  notify: service zabbix
 
 - name: pgsql subrole
   include: pgsql.yml
   when: server_db == "pgsql" and server_installdb
+  notify: service zabbix
 
 - name: nginx subrole
   include: nginx.yml
   when: server_frontend == "nginx" and server_installfrontend
+  notify: service zabbix
 
 - name: apache subrole
   include: apache.yml
   when: server_frontend == "apache" and server_installfrontend
+  notify: service zabbix
