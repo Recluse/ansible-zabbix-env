@@ -8,7 +8,6 @@ server_frontend: nginx # nginx or apache
 server_db: mysql # mysql or pgsql
 server_installdb: True
 server_loaddb: True
-server_dbhost: localhost
 server_dbname: zabbix
 server_dbuser: zabbix
 server_dbpassword: zabbix

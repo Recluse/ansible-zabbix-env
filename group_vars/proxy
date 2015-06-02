@@ -4,7 +4,6 @@
 proxy_db: sqlite3 # mysql, pgsql or sqlite3
 proxy_installdb: True
 proxy_loaddb: True
-proxy_dbhost: localhost
 proxy_dbname: zabbix
 proxy_dbuser: zabbix
 proxy_dbpassword: zabbix

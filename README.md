@@ -34,7 +34,7 @@ All the basic parameters are stored in variables files, localized in `group_vars
   * `_db`: mysql, pgsql or sqlite3 (last one just for the proxy), select the backend. This setting is switchable, but no data is migrated between runs.
   * `_installdb`: True if database installation is needed. If False, zabbix-server will use the specified information about the database but won't install it.
   * `_loaddb`: if True, will configure the database (users, load sql files).
-  * `_db*`: configure the hostname, database user and password name. For the sqlite3, just hostname is not ignored. It's the path do the .db file, hardcoded in the playbook.
+  * `_db*`: configure the database user and password name. For the sqlite3, _dbname is the path do the .db file, hardcoded in the playbook.
   * `_timezone`: timezone defined in php.ini and php-fpm.
   
   * `pgsql_version`: version used in the Postgres repository.
