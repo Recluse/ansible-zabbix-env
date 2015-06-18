@@ -1,6 +1,6 @@
 ---
 - name: install zabbix-proxy-bd
-  yum: name=zabbix-proxy-{{ proxy_db }} state=latest disable_gpg_check=yes
+  yum: name=zabbix-proxy-{{ proxy_db }} state=present disable_gpg_check=yes
 
 - name: get zabbix long version
   shell: "rpm -qav | grep zabbix-proxy-2 | cut -d - -f 3"

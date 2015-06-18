@@ -5,7 +5,7 @@
   register: proxy_dbstatus
 
 - name: install sqlite db
-  yum: name=sqlite,sqlite-devel state=latest disable_gpg_check=yes
+  yum: name=sqlite,sqlite-devel state=present disable_gpg_check=yes
 
 - name: create sqlite structure
   file: name=/var/lib/sqlite state=directory owner=zabbix group=zabbix

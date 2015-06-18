@@ -5,7 +5,7 @@
   register: init_pgsql
 
 - name: install pgsql db
-  yum: name=postgresql,postgresql-server,python-psycopg2 state=latest disable_gpg_check=yes
+  yum: name=postgresql,postgresql-server,python-psycopg2 state=present disable_gpg_check=yes
   notify: service pgsql
 
 - name: init pgsql

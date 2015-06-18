@@ -3,7 +3,7 @@
   service: name=httpd state=stopped enabled=no
 
 - name: install nginx and php-fpm
-  yum: name=nginx,php-fpm state=latest disable_gpg_check=yes
+  yum: name=nginx,php-fpm state=present disable_gpg_check=yes
   notify: service nginx
   notify: service php-fpm 
 

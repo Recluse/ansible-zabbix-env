@@ -5,7 +5,7 @@
   register: proxy_dbstatus
 
 - name: install mysql db
-  yum: name=mariadb,mariadb-server,MySQL-python state=latest disable_gpg_check=yes
+  yum: name=mariadb,mariadb-server,MySQL-python state=present disable_gpg_check=yes
   notify: service mysql
 
 - name: force mysql to start 
