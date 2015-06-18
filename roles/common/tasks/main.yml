@@ -28,4 +28,4 @@
 
 - name: intall Ubuntu12 repo
   apt: deb=/usr/src/zabbix-agent_2.4.5-1+precise.deb 
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "12
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "12"
